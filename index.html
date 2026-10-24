@@ -1,0 +1,97 @@
+<!DOCTYPE html><html lang="kk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>ТОПҚА БӨЛУ</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+:root{--t:#19d3c5;--y:#ffd34d;--e:#1fbf7a;--m:#f7f3e8}*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;overflow-x:hidden}body{font-family:system-ui,Segoe UI,Roboto,sans-serif;color:var(--m);background:radial-gradient(ellipse at 20% 0,#12406b,transparent 60%),radial-gradient(ellipse at 90% 100%,#0a5a5a55,transparent 50%),#071428;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+main{max-width:1200px;margin:0 auto;padding:14px;text-align:center}
+.orn{height:18px;margin:6px 0;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='18'%3E%3Cpath d='M4 9c0-6 8-6 8 0s-6 5-6 1M44 9c0-6-8-6-8 0s6 5 6 1M12 9h24' fill='none' stroke='%23ffd34d' stroke-width='1.4'/%3E%3C/svg%3E") repeat-x center;opacity:.8}
+h1{font-size:clamp(26px,5vw,46px);margin:4px;letter-spacing:3px;color:var(--y);text-shadow:0 0 18px #ffd34d66}.sub{opacity:.85;font-size:clamp(13px,2vw,17px);max-width:760px;margin:4px auto}
+.card{background:#0b1d3acc;border:1px solid #ffd34d44;border-radius:16px;padding:14px;box-shadow:0 0 22px #19d3c522}
+.grid{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;margin:14px 0}@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.wheelbox{position:relative;width:min(92vw,460px);aspect-ratio:1;margin:auto}.wheelbox.big{width:min(92vw,560px)}
+#wheel{width:100%;height:100%;transition:transform 5s cubic-bezier(.12,.7,.1,1)}
+.ptr{position:absolute;left:50%;top:-6px;transform:translateX(-50%);width:0;height:0;border:16px solid transparent;border-top:34px solid #fff;filter:drop-shadow(0 0 6px #fff)}
+button{background:linear-gradient(135deg,#19d3c5,#1fbf7a);color:#042;border:0;border-radius:12px;padding:13px 18px;font:700 15px system-ui;cursor:pointer;margin:4px;min-height:46px}button.s{background:#ffffff1f;color:var(--m)}button.d{background:#c0392b;color:#fff}button:disabled{opacity:.4}button:focus-visible{outline:3px solid #fff}
+.go{font-size:clamp(15px,4vw,20px);padding:16px 22px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}@media(max-width:600px){.g3{grid-template-columns:1fr}}
+.gc{border-radius:14px;padding:12px;border:2px solid var(--c);background:linear-gradient(160deg,color-mix(in srgb,var(--c) 22%,#071428),#071428)}.gc svg{width:70px;height:70px}.gc b{display:block;font-size:20px;color:var(--c)}.gc .n{font-size:40px;font-weight:800}
+.res{font-size:clamp(34px,9vw,60px);font-weight:800;margin:8px 0;animation:pop .7s}@keyframes pop{from{transform:scale(.3);opacity:0}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;max-height:150px;overflow:auto}.chip{padding:4px 10px;border-radius:99px;background:var(--c);color:#031;font-weight:700;font-size:13px;animation:pop .5s}
+.bar{display:flex;height:22px;border-radius:11px;overflow:hidden;background:#ffffff1a}.bar i{transition:width .6s}
+.err{background:#7a1f2b;padding:10px;border-radius:10px;margin:8px 0}.warn{background:#6b4a00;padding:10px;border-radius:10px;margin:8px 0}.pill{padding:4px 14px;border-radius:99px;background:#ffffff22;font-weight:700}
+input{padding:12px;border-radius:10px;border:1px solid #ffd34d66;background:#0008;color:#fff;font-size:16px;max-width:100%}.full .hide{display:none}
+@media(prefers-reduced-motion:reduce){#wheel{transition-duration:.01s!important}.res,.chip{animation:none}}
+</style></head><body><main id="app"></main>
+<script>
+/* ===== Баптау: Supabase мәндерін осында қойыңыз (README) ===== */
+const CFG={URL:'https://qxrlxxlbjvorwrcammju.supabase.co',KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF4cmx4eGxianZvcndyY2FtbWp1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI4MzI2MjYsImV4cCI6MjEwODQwODYyNn0.jW5fCfhiMaXpaFbpiFcrMtxjKchDm95-EQAq8LjlOOQ'};
+const SB=!!(CFG.URL&&CFG.KEY),$=s=>document.querySelector(s),app=$('#app');
+const GR=[{n:'Қысым',c:'#19d3c5',ic:'<circle cx="35" cy="40" r="26" fill="none" stroke="#19d3c5" stroke-width="4"/><path d="M35 40L50 22" stroke="#ffd34d" stroke-width="4" stroke-linecap="round"/><circle cx="35" cy="40" r="4" fill="#ffd34d"/><path d="M20 60h30" stroke="#19d3c5" stroke-width="4"/>'},
+{n:'Электр тогы',c:'#ffd34d',ic:'<circle cx="35" cy="28" r="18" fill="#ffd34d44" stroke="#ffd34d" stroke-width="4"/><path d="M28 48h14M30 56h10" stroke="#ffd34d" stroke-width="4" stroke-linecap="round"/><path d="M38 14L28 30h8l-3 12 11-17h-8z" fill="#fff"/>'},
+{n:'Күш',c:'#1fbf7a',ic:'<path d="M8 42h46" stroke="#1fbf7a" stroke-width="6" stroke-linecap="round"/><path d="M50 28l16 14-16 14z" fill="#1fbf7a"/><rect x="8" y="22" width="14" height="40" rx="4" fill="none" stroke="#ffd34d" stroke-width="3"/>'}];
+const ico=i=>`<svg viewBox="0 0 70 70" aria-hidden="true">${GR[i].ic}</svg>`;
+const P=new URLSearchParams(location.search),H=new URLSearchParams(location.hash.slice(1));
+let mute=false;const beep=f=>{if(mute)return;try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f;g.gain.value=.08;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.12)}catch(e){}};
+/* ===== Деректер қабаты: Supabase RPC немесе жергілікті демо ===== */
+async function rpc(fn,args){const r=await fetch(CFG.URL+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:CFG.KEY,Authorization:'Bearer '+CFG.KEY,'Content-Type':'application/json'},body:JSON.stringify(args)});
+ const t=await r.text();if(!r.ok){let m='';try{m=JSON.parse(t).message}catch(e){}throw new Error(m||('HTTP '+r.status))}return t?JSON.parse(t):null}
+const ld=()=>JSON.parse(localStorage.getItem('tb_demo')||'{"status":"open","p":[]}'),sv=d=>localStorage.setItem('tb_demo',JSON.stringify(d));
+const API=SB?{
+ create:pw=>rpc('create_session',{pw}),join:(sid,cid)=>rpc('join_session',{sid,cid}),spin:(sid,cid)=>rpc('spin',{sid,cid}),state:sid=>rpc('get_state',{sid}),close:(pw,sid)=>rpc('close_session',{pw,sid}),reset:(pw,sid)=>rpc('reset_session',{pw,sid})
+}:{
+ create:async()=>{sv({status:'open',p:[]});return 'demo'},
+ join:async(s,cid)=>{const d=ld();let p=d.p.find(x=>x.cid===cid);if(!p){if(d.status!=='open')throw new Error('closed');p={cid,num:d.p.length+1,grp:null};d.p.push(p);sv(d)}return{num:p.num,grp:p.grp,status:d.status}},
+ spin:async(s,cid)=>{const d=ld(),p=d.p.find(x=>x.cid===cid);if(p.grp!=null)return p;if(d.status!=='open')throw new Error('closed');const c=[0,1,2].map(g=>d.p.filter(x=>x.grp===g).length),m=Math.min(...c),k=[0,1,2].filter(g=>c[g]===m);p.grp=k[Math.floor(Math.random()*k.length)];sv(d);return p},
+ state:async()=>{const d=ld();return{status:d.status,total:d.p.length,counts:[0,1,2].map(g=>d.p.filter(x=>x.grp===g).length),list:d.p.map(x=>({num:x.num,grp:x.grp}))}},
+ close:async()=>{const d=ld();d.status='closed';sv(d)},reset:async()=>{sv({status:'open',p:[]})}};
+const msg=e=>({closed:'Топқа бөлу жабылған немесе аяқталған.',no_session:'Бұл сессия табылмады.',bad_password:'Құпия сөз қате.',not_joined:'Алдымен қосылыңыз.'}[e.message]||'Байланыс уақытша үзілді. Қайта қосылу жүріп жатыр...');
+const wheelSVG=()=>{let s='<svg id="wheel" viewBox="-110 -110 220 220"><circle r="106" fill="#0b1d3a" stroke="#ffd34d" stroke-width="3"/>';
+ GR.forEach((g,i)=>{const a0=(i*120-90)*Math.PI/180,a1=((i+1)*120-90)*Math.PI/180,am=(i*120+60-90)*Math.PI/180;
+ s+=`<path d="M0 0L${95*Math.cos(a0)} ${95*Math.sin(a0)}A95 95 0 0 1 ${95*Math.cos(a1)} ${95*Math.sin(a1)}Z" fill="${g.c}" stroke="#071428" stroke-width="2" opacity=".92"/><text transform="translate(${58*Math.cos(am)} ${58*Math.sin(am)}) rotate(${i*120+60})" text-anchor="middle" font-size="12" font-weight="800" fill="#031">${g.n}</text>`});
+ for(let i=0;i<24;i++){const a=i*15*Math.PI/180;s+=`<circle cx="${101*Math.cos(a)}" cy="${101*Math.sin(a)}" r="1.8" fill="#ffd34d"/>`}
+ return s+'<circle r="17" fill="#071428" stroke="#ffd34d" stroke-width="2"/><circle r="4" fill="#19d3c5"/><path d="M-9 0h18M0-9v18" stroke="#ffd34d" stroke-width="1.2"/></svg>'};
+let rot=0;const spinTo=g=>{rot+=360*6+(360-(g*120+60))-(rot%360)+(Math.random()*60-30);$('#wheel').style.transform=`rotate(${rot}deg)`;let n=0;const t=setInterval(()=>{beep(500+n*20);if(++n>14)clearInterval(t)},300)};
+const head=`<div class="orn"></div><h1>ТОПҚА БӨЛУ</h1><div class="sub">Физика пәнін оқытуда жасанды интеллект элементтерін қолдану арқылы функционалдық сауаттылық тапсырмаларын орындау</div><div class="orn"></div>`;
+const bad=m=>`<div class="err" role="alert">${m}</div>`;
+/* ===== Қатысушы ===== */
+async function student(sid){
+ let cid=localStorage.getItem('tb_cid');if(!cid){cid=crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now();localStorage.setItem('tb_cid',cid)}
+ app.innerHTML=head+'<p>Жүктелуде…</p>';let me;
+ try{me=await API.join(sid,cid)}catch(e){app.innerHTML=head+bad(msg(e));return}
+ const show=g=>{$('#out').innerHTML=`<div>СІЗДІҢ ТОБЫҢЫЗ</div><div class="res" style="color:${GR[g].c}">${GR[g].n}</div><div class="gc" style="--c:${GR[g].c};display:inline-block">${ico(g)}</div><p>Сіз осы топтың мүшесісіз!</p>`;$('#go').disabled=true;beep(880)};
+ app.innerHTML=head+(SB?'':'<div class="warn">Демо режим: бұл құрылғыда ғана жұмыс істейді.</div>')+`<p id="hint">Дайын болсаңыз, дөңгелекті айналдырып, өз тобыңызды анықтаңыз!</p><div class="wheelbox"><div class="ptr"></div>${wheelSVG()}</div><button class="go" id="go">ДӨҢГЕЛЕКТІ АЙНАЛДЫРУ</button><button class="s" id="mu">ДЫБЫСТЫ ӨШІРУ</button><div id="out" aria-live="polite"></div><div id="e"></div>`;
+ $('#mu').onclick=()=>{mute=!mute;$('#mu').textContent=mute?'ДЫБЫСТЫ ҚОСУ':'ДЫБЫСТЫ ӨШІРУ'};
+ if(me.grp!=null){$('#wheel').style.transition='none';show(me.grp);$('#hint').textContent='';return}
+ let busy=false;$('#go').onclick=async()=>{if(busy)return;busy=true;$('#go').disabled=true;$('#hint').textContent='Сіздің тобыңыз анықталуда...';$('#e').innerHTML='';
+  try{const r=await API.spin(sid,cid);spinTo(r.grp);setTimeout(()=>{$('#hint').textContent='';show(r.grp)},5200)}catch(e){busy=false;$('#go').disabled=false;$('#hint').textContent='';$('#e').innerHTML=bad(msg(e))}}}
+/* ===== Ұйымдастырушы ===== */
+async function host(sid,pw){
+ const base=location.origin+location.pathname,link=sid?base+'?s='+sid:'';let timer;
+ if(!sid){app.innerHTML=head+`<div class="card"><p>Ұйымдастырушы құпия сөзі:</p><input type="password" id="pw" aria-label="Құпия сөз"> <button id="mk">ЖАҢА СЕССИЯ</button><div id="e"></div></div>`+(SB?'':'<div class="warn">Демо режим: құпия сөз талап етілмейді, деректер осы браузерде ғана.</div>');
+  $('#mk').onclick=async()=>{try{const id=await API.create($('#pw').value);history.replaceState(null,'','#host='+id);window._pw=$('#pw').value;host(id,window._pw)}catch(e){$('#e').innerHTML=bad(msg(e))}};return}
+ pw=pw||window._pw||'';
+ app.innerHTML=head+`<div class="hide" id="st"></div><div class="grid"><div class="card hide" id="qc"><div id="qr" style="background:#fff;padding:10px;border-radius:10px;display:inline-block"></div><p style="font-size:13px;word-break:break-all">${link}</p>${link.includes('localhost')||link.startsWith('file')?'<div class="warn">Бұл жергілікті мекенжай. QR үшін сайтты интернетке жариялаңыз.</div>':''}<button id="cp">СІЛТЕМЕНІ КӨШІРУ</button></div>
+ <div class="wheelbox" id="wb"><div class="ptr"></div>${wheelSVG()}</div><div class="card" id="cn"></div></div><div class="g3" id="g3"></div><div class="card" style="margin:12px 0"><div class="bar" id="bar"></div><p style="font-size:13px">Барлық қатысушылар үш топқа теңгерімді түрде бөлінеді</p><div class="chips" id="chips"></div></div>
+ <div class="hide"><button id="rf">НӘТИЖЕЛЕРДІ ЖАҢАРТУ</button><button id="fs">ТОЛЫҚ ЭКРАН</button><button id="csv">НӘТИЖЕНІ ЖҮКТЕП АЛУ</button><button class="d" id="cl">ТОПҚА БӨЛУДІ АЯҚТАУ</button><button class="d" id="rs">НӘТИЖЕЛЕРДІ ТАЗАРТУ</button><button class="s" id="nw">ЖАҢА СЕССИЯ</button></div><div id="e"></div>`;
+ try{new QRCode($('#qr'),{text:link,width:190,height:190})}catch(e){}
+ let last=null;const draw=s=>{last=s;const as=s.counts.reduce((a,b)=>a+b,0),cl=s.status!=='open';
+  $('#st').outerHTML=`<div class="hide" id="st"><span class="pill">${cl?'Топқа бөлу аяқталды':as?'Топқа бөлу жүріп жатыр':'Қатысушылар қосылуда'}</span></div>`;
+  $('#cn').innerHTML=`<div style="font-size:15px">Қосылғандар</div><div style="font-size:44px;font-weight:800">${s.total}</div><div>Топ алғандар: <b>${as}</b></div><div>Айналдырмағандар: <b>${s.total-as}</b></div>`;
+  $('#g3').innerHTML=GR.map((g,i)=>`<div class="gc" style="--c:${g.c}">${ico(i)}<b>${g.n}</b><div class="n">${s.counts[i]}</div></div>`).join('');
+  $('#bar').innerHTML=GR.map((g,i)=>`<i style="width:${as?s.counts[i]/as*100:0}%;background:${g.c}"></i>`).join('');
+  $('#chips').innerHTML=s.list.map(p=>`<span class="chip" style="--c:${p.grp==null?'#8aa':GR[p.grp].c}">№${p.num}${p.grp==null?'':' · '+GR[p.grp].n}</span>`).join('')};
+ const poll=async()=>{try{draw(await API.state(sid));$('#e').innerHTML=''}catch(e){$('#e').innerHTML=bad('Байланыс уақытша үзілді. Қайта қосылу жүріп жатыр...')}};
+ poll();timer=setInterval(poll,1500);
+ const adm=async(f)=>{try{await f();poll()}catch(e){$('#e').innerHTML=bad(msg(e))}};
+ $('#cp').onclick=async()=>{try{await navigator.clipboard.writeText(link);$('#cp').textContent='КӨШІРІЛДІ ✓'}catch(e){}};
+ $('#rf').onclick=poll;$('#fs').onclick=()=>{document.body.classList.toggle('full');$('#wb').classList.toggle('big');document.documentElement.requestFullscreen&&!document.fullscreenElement&&document.documentElement.requestFullscreen().catch(()=>{})};
+ $('#csv').onclick=()=>{if(!last)return;const t='№,Топ\n'+last.list.map(p=>p.num+','+(p.grp==null?'':GR[p.grp].n)).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+t],{type:'text/csv'}));a.download='topqa_nátije.csv';a.click()};
+ $('#cl').onclick=()=>confirm('Жаңа қатысушыларды қабылдау тоқтатылады. Жалғастырасыз ба?')&&adm(()=>API.close(pw,sid));
+ $('#rs').onclick=()=>confirm('Осы сессияның барлық нәтижелері жойылады. Растайсыз ба?')&&adm(()=>API.reset(pw,sid));
+ $('#nw').onclick=()=>{clearInterval(timer);history.replaceState(null,'','#host');host(null)};
+}
+/* ===== Бағыттау ===== */
+const sid=P.get('s'),hs=H.get('host');
+if(sid)student(sid);else if(location.hash.startsWith('#host'))host(hs||null);
+else app.innerHTML=head+`<p>Қатысушылар QR-кодты сканерлеуі керек.</p><a href="#host" onclick="setTimeout(()=>location.reload())" style="color:var(--y);font-size:20px">Ұйымдастырушы бетін ашу</a>`;
+</script></body></html>
